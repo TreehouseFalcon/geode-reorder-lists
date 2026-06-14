@@ -1,0 +1,27 @@
+name: Analyze Luau
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Luau checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rokit toolchain
+        uses: CompeyDev/setup-rokit@v0.2.1
+
+      # luau-analyze doesn't have a way to pass global definitions yet.
+      - name: Analyze Luau
+        if: false
+        run: luau-analyze mod/
+
+      - name: Verify formatting
+        run: stylua -c mod/
