@@ -102,7 +102,9 @@ local function persistListOrder(layer: LevelBrowserLayer)
 	for index = 0, levels:count() - 1 do
 		local list = levels:objectAtIndex(index) :: GJLevelList?
 		if list then
-			gameLevelManager:updateSavedLevelList(list)
+			local savedList = gameLevelManager:getSavedLevelList(list.m_listID) or list
+			savedList.m_listOrder = list.m_listOrder
+			gameLevelManager:updateSavedLevelList(savedList)
 		end
 	end
 end
@@ -183,23 +185,17 @@ local function moveListToIndex(layer: LevelBrowserLayer, list: GJLevelList, targ
 		orderedLists[index + 1] = levels:objectAtIndex(index) :: GJLevelList?
 	end
 
-	local step = if targetIndex > currentIndex then 1 else -1
-	local index = currentIndex
-	while index ~= targetIndex do
-		local nextIndex = index + step
-		local currentList = orderedLists[index + 1]
-		local nextList = orderedLists[nextIndex + 1]
-		if not currentList or not nextList then
+	for index = 1, count do
+		if not orderedLists[index] then
 			return
 		end
+	end
 
-		local order = currentList.m_listOrder
-		currentList.m_listOrder = nextList.m_listOrder
-		nextList.m_listOrder = order
+	local movedList = table.remove(orderedLists, currentIndex + 1)
+	table.insert(orderedLists, targetIndex + 1, movedList)
 
-		orderedLists[index + 1] = nextList
-		orderedLists[nextIndex + 1] = currentList
-		index = nextIndex
+	for index = 1, count do
+		orderedLists[index].m_listOrder = count - index
 	end
 
 	persistListOrder(layer)
