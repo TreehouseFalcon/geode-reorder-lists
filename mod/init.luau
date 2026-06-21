@@ -146,16 +146,18 @@ local function upsertEditActionButton(
 	position: CCPoint,
 	callback: (CCObject) -> ()
 ): (CCMenuItemSpriteExtra, boolean)
-	local button = getEditActionButton(menu, id)
+	local existingButton = getEditActionButton(menu, id)
 	local created = false
-	if not button then
-		button = createEditActionButton(id, frame, bgImage, callback)
-		menu:addChild(button)
+	if not existingButton then
+		local newButton = createEditActionButton(id, frame, bgImage, callback)
+		menu:addChild(newButton)
 		created = true
+		existingButton = newButton
 	else
-		button:setTarget(callback)
+		existingButton:setTarget(callback)
 	end
 
+	local button = existingButton :: CCMenuItemSpriteExtra
 	button:setPosition(position)
 	button:setVisible(true)
 	button:setEnabled(true)
