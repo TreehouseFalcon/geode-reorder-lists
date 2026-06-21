@@ -86,17 +86,14 @@ local function createEditActionButton(
 end
 
 local function removeButton(root: CCNode, id: string)
-	-- this seems to prevent arbitrary crashes?
-	for _ = 1, 8 do
-		local button = root:getChildByIDRecursive(id) :: CCMenuItemSpriteExtra?
-		if not button then
-			return
-		end
-
-		button:setEnabled(false)
-		button:setVisible(false)
-		button:removeFromParentAndCleanup(true)
+	local button = root:getChildByIDRecursive(id) :: CCMenuItemSpriteExtra?
+	if not button then
+		return
 	end
+
+	button:setEnabled(false)
+	button:setVisible(false)
+	button:removeFromParentAndCleanup(true)
 end
 
 local function removeEditActionButtons(root: CCNode)
