@@ -28,7 +28,7 @@
 	"settings": {},
 	"dependencies": {
 		"geode.node-ids": ">=v1.23.3",
-		"imes.luauapi": ">=v0.1.0-beta.5"
+		"imes.luauapi": ">=v0.1.0-beta.8"
 	},
 	"resources": {
 		"files": [
